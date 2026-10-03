@@ -1594,7 +1594,7 @@ MonoBehaviour:
   intervaloAparicion: 3
   aparecerAlIniciar: 1
   generarActivo: 1
-  eliminarVivosAlDetener: 0
+  eliminarVivosAlDetener: 1
 --- !u!1 &1657553993
 GameObject:
   m_ObjectHideFlags: 0
