@@ -9,7 +9,13 @@ public class Teletransportador : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Teletransportar();
+        if(other.CompareTag("Player"))
+        {
+            Teletransportar();
+
+
+        }
+    
         
     }
 

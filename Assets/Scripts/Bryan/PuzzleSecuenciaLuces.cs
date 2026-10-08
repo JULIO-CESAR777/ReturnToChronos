@@ -439,7 +439,7 @@ public class PuzzleSecuenciaLuces : MonoBehaviour
             retrasoReinicio
         );
 
-
+        ApagarTodas();
         // Si quieres que cada error genere
         // una secuencia completamente nueva.
         if (regenerarAlFallar)

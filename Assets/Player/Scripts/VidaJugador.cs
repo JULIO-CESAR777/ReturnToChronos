@@ -133,7 +133,7 @@ public class VidaJugador : MonoBehaviour
         Debug.Log("Player murió.");
 
         alMorir?.Invoke();
-        SceneManager.LoadScene("MainMenu");
-        
+        SceneTransitionManager.Instance.LoadScene("Nivel1");
+
     }
 }
