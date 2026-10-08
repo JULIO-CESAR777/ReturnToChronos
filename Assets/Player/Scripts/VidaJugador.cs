@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class VidaJugador : MonoBehaviour
 {
@@ -132,11 +133,7 @@ public class VidaJugador : MonoBehaviour
         Debug.Log("Player murió.");
 
         alMorir?.Invoke();
-
-        // Después aquí podemos poner:
-        // animación
-        // respawn
-        // Game Over
-        // etc.
+        SceneManager.LoadScene("MainMenu");
+        
     }
 }
