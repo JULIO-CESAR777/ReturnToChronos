@@ -446,7 +446,7 @@ GameObject:
   - component: {fileID: 486768400}
   - component: {fileID: 486768398}
   m_Layer: 0
-  m_Name: P_Rock
+  m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -637,12 +637,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 507655599}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 27.56696, y: 0.8599999, z: -33.61155}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 8.37, y: 0.8599999, z: -7.51}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1646887031}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &520099775
 GameObject:
@@ -3218,7 +3218,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 486768397}
-  - {fileID: 507655602}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1657553993
@@ -3997,3 +3996,4 @@ SceneRoots:
   - {fileID: 618317444}
   - {fileID: 1646887031}
   - {fileID: 1225678584}
+  - {fileID: 507655602}
