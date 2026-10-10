@@ -1,11 +1,8 @@
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
-/// <summary>
-/// Luz interactuable del puzzle.
-/// Se puede activar interactuando cerca
-/// o recibiendo un golpe del jugador.
-/// </summary>
+// Se puede activar interactuando cerca
 [RequireComponent(typeof(Collider))]
 public class LuzPuzzle : MonoBehaviour
 {
@@ -13,341 +10,254 @@ public class LuzPuzzle : MonoBehaviour
     [SerializeField] private Light luzObjetivo;
     [SerializeField] private Renderer renderizadorObjetivo;
 
-    [SerializeField] private Color colorApagado =
+    [SerializeField]
+    private Color colorApagado =
         new Color(0.12f, 0.12f, 0.14f);
 
-    [SerializeField] private Color colorReposo =
+    [SerializeField]
+    private Color colorReposo =
         new Color(0.25f, 0.55f, 1f);
 
-    [SerializeField] private Color colorPista =
-        Color.white;
+    [SerializeField] private Color colorPista = Color.white;
 
-    [SerializeField] private Color colorSeleccionado =
+    [SerializeField]
+    private Color colorSeleccionado =
         new Color(1f, 0.85f, 0.2f);
 
-    [SerializeField] private Color colorAcierto =
+    [SerializeField]
+    private Color colorAcierto =
         new Color(0.2f, 1f, 0.35f);
 
-    [SerializeField] private Color colorError =
+    [SerializeField]
+    private Color colorError =
         new Color(1f, 0.2f, 0.2f);
-
 
     [Header("Interaccion")]
     [SerializeField] private float rangoInteraccion = 2.2f;
-    
+
     [Header("Feedback")]
     [SerializeField] private float duracionFeedbackCorrecto = 1f;
 
     private Coroutine feedbackSeleccionado;
 
+    // Material almacenado para evitar obtenerlo en cada cambio visual.
+    private Material materialObjetivo;
 
     private PuzzleSecuenciaLuces puzzle;
-
     private int indice;
-
     private bool jugadorDentro;
-
     private Transform jugador;
-
 
     public int Indice => indice;
 
-
-    // =========================================================
     // CONFIGURACION
-    // =========================================================
-
     public void Configurar(
         PuzzleSecuenciaLuces duenio,
-        int indiceLuz
-    )
+        int indiceLuz)
     {
         puzzle = duenio;
-
         indice = indiceLuz;
 
-
         if (luzObjetivo == null)
-        {
-            luzObjetivo =
-                GetComponentInChildren<Light>();
-        }
-
+            luzObjetivo = GetComponentInChildren<Light>();
 
         if (renderizadorObjetivo == null)
-        {
-            renderizadorObjetivo =
-                GetComponentInChildren<Renderer>();
-        }
+            renderizadorObjetivo = GetComponentInChildren<Renderer>();
 
+        // Se obtiene una sola vez el material de esta luz.
+        if (renderizadorObjetivo != null)
+            materialObjetivo = renderizadorObjetivo.material;
 
-        AplicarVisual(
-            colorApagado,
-            0f
-        );
+        MostrarApagado();
     }
 
-
-    // =========================================================
     // INTERACCION NORMAL
-    // =========================================================
-
     private void Update()
     {
-        if (!jugadorDentro)
+        if (!jugadorDentro || puzzle == null)
             return;
-
-
-        if (puzzle == null)
-            return;
-
 
         if (!puzzle.AceptaEntrada)
             return;
 
-
         if (!SePulsoInteractuar())
             return;
 
-
         if (jugador != null)
         {
-            float distancia =
-                Vector3.Distance(
-                    jugador.position,
-                    transform.position
-                );
-
+            float distancia = Vector3.Distance(
+                jugador.position,
+                transform.position);
 
             if (distancia > rangoInteraccion)
                 return;
         }
 
-
         ActivarLuz();
     }
-
-
-    // =========================================================
     // RECIBIR GOLPE
-    // =========================================================
 
     public void RecibirGolpe()
     {
-        if (puzzle == null)
+        if (puzzle == null || !puzzle.AceptaEntrada)
             return;
-
-
-        if (!puzzle.AceptaEntrada)
-            return;
-
 
         ActivarLuz();
     }
 
-
-    // =========================================================
-    // ACTIVAR
-    // =========================================================
-
     private void ActivarLuz()
     {
-        puzzle.IntentarActivar(this);
+        if (puzzle != null)
+            puzzle.IntentarActivar(this);
     }
-
-
-    // =========================================================
     // TRIGGER JUGADOR
-    // =========================================================
 
     private void OnTriggerEnter(Collider otro)
     {
         if (!otro.CompareTag("Player"))
             return;
 
-
         jugadorDentro = true;
-
-        jugador =
-            otro.transform;
+        jugador = otro.transform;
     }
-
 
     private void OnTriggerExit(Collider otro)
     {
         if (!otro.CompareTag("Player"))
             return;
 
-
-        jugadorDentro = false;
-
-
+        // Evita perder la referencia si hay varios colliders
+        // del jugador entrando en el mismo trigger.
         if (jugador == otro.transform)
         {
+            jugadorDentro = false;
             jugador = null;
         }
     }
-
-
-    // =========================================================
     // VISUALES
-    // =========================================================
-
     public void MostrarPista()
     {
-        AplicarVisual(
-            colorPista,
-            3.5f
-        );
+        CancelarFeedback();
+        AplicarVisual(colorPista, 3.5f);
     }
-
 
     public void MostrarReposo()
     {
-        AplicarVisual(
-            colorReposo,
-            1.2f
-        );
+        CancelarFeedback();
+        AplicarVisual(colorReposo, 1.2f);
     }
-
 
     public void MostrarSeleccionado()
     {
-        if (feedbackSeleccionado != null)
-        {
-            StopCoroutine(feedbackSeleccionado);
-        }
+        CancelarFeedback();
 
         feedbackSeleccionado =
             StartCoroutine(FeedbackCorrecto());
     }
-    
 
     public void MostrarAcierto()
     {
-        AplicarVisual(
-            colorAcierto,
-            5f
-        );
+        CancelarFeedback();
+        AplicarVisual(colorAcierto, 5f);
     }
-
 
     public void MostrarError()
     {
-        AplicarVisual(
-            colorError,
-            4f
-        );
+        CancelarFeedback();
+        AplicarVisual(colorError, 4f);
     }
-
 
     public void MostrarApagado()
     {
-        AplicarVisual(
-            colorApagado,
-            0f
-        );
+        CancelarFeedback();
+        AplicarVisual(colorApagado, 0f);
+    }
+    // CONTROL DEL FEEDBACK
+
+    private void CancelarFeedback()
+    {
+        if (feedbackSeleccionado == null)
+            return;
+
+        StopCoroutine(feedbackSeleccionado);
+        feedbackSeleccionado = null;
     }
 
-
-    private void AplicarVisual(
-        Color color,
-        float intensidad
-    )
+    // APLICAR VISUALES
+    private void AplicarVisual(Color color, float intensidad)
     {
+        bool encendida = intensidad > 0.01f;
+
         if (luzObjetivo != null)
         {
-            luzObjetivo.color =
-                color;
-
-            luzObjetivo.intensity =
-                intensidad;
-
-            luzObjetivo.enabled =
-                intensidad > 0.01f;
+            luzObjetivo.color = color;
+            luzObjetivo.intensity = intensidad;
+            luzObjetivo.enabled = encendida;
         }
 
-
-        if (renderizadorObjetivo != null)
+        if (materialObjetivo != null)
         {
-            Material material =
-                renderizadorObjetivo.material;
+            materialObjetivo.color = color;
 
-
-            material.color =
-                color;
-
-
-            if (
-                material.HasProperty(
-                    "_EmissionColor"
-                )
-            )
+            if (materialObjetivo.HasProperty("_EmissionColor"))
             {
-                material.EnableKeyword(
-                    "_EMISSION"
-                );
+                if (encendida)
+                {
+                    materialObjetivo.EnableKeyword("_EMISSION");
 
-
-                material.SetColor(
-                    "_EmissionColor",
-                    color *
-                    Mathf.Max(
-                        intensidad,
-                        0.2f
-                    )
-                );
+                    materialObjetivo.SetColor(
+                        "_EmissionColor",
+                        color * intensidad);
+                }
+                else
+                {
+                    // Elimina el brillo residual del material.
+                    materialObjetivo.SetColor(
+                        "_EmissionColor",
+                        Color.black);
+                }
             }
         }
     }
-
-
+    // FEEDBACK DE SELECCION
     private IEnumerator FeedbackCorrecto()
     {
-        // Se prende indicando que fue correcta
-        AplicarVisual(
-            colorSeleccionado,
-            4f
-        );
+        AplicarVisual(colorSeleccionado, 4f);
 
-        // Dura 1 segundo
         yield return new WaitForSeconds(
-            duracionFeedbackCorrecto
-        );
+            duracionFeedbackCorrecto);
 
-        // Vuelve al estado normal
-        AplicarVisual(
-            colorReposo,
-            1.2f
-        );
-
+        // La corrutina solo puede llegar aquí si no fue cancelada
+        // por otro cambio de estado de la luz.
         feedbackSeleccionado = null;
-    }
-    // =========================================================
-    // INPUT INTERACCION
-    // =========================================================
 
+        AplicarVisual(colorReposo, 1.2f);
+    }
+    // INPUT INTERACCION
     private static bool SePulsoInteractuar()
     {
-        Keyboard teclado =
-            Keyboard.current;
+        Keyboard teclado = Keyboard.current;
 
-
-        if (
-            teclado != null &&
-            teclado.eKey.wasPressedThisFrame
-        )
+        if (teclado != null &&
+            teclado.eKey.wasPressedThisFrame)
         {
             return true;
         }
 
+        Gamepad mando = Gamepad.current;
 
-        Gamepad mando =
-            Gamepad.current;
+        return mando != null &&
+               mando.buttonNorth.wasPressedThisFrame;
+    }
+    // LIMPIEZA
+    private void OnDestroy()
+    {
+        CancelarFeedback();
 
-
-        return
-            mando != null &&
-            mando.buttonNorth.wasPressedThisFrame;
+        if (materialObjetivo != null)
+        {
+            Destroy(materialObjetivo);
+            materialObjetivo = null;
+        }
     }
 }
