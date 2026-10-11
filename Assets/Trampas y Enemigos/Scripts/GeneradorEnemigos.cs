@@ -10,7 +10,6 @@ public class GeneradorEnemigos : MonoBehaviour
     [SerializeField] GameObject prefabEnemigo;
     [SerializeField] Transform[] puntosAparicion;
     [SerializeField] Transform jugador;
-    [SerializeField] int maximoVivos = 6;
     [SerializeField] float intervaloAparicion = 3f;
     [SerializeField] bool aparecerAlIniciar = true;
     [SerializeField] bool generarActivo = true;

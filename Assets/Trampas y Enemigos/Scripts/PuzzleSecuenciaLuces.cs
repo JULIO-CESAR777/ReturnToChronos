@@ -1,36 +1,33 @@
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-/// <summary>
 /// Puzzle de secuencia de luces.
 /// Genera una secuencia aleatoria al comenzar.
 /// El jugador debe memorizarla y repetirla.
-/// </summary>
 public class PuzzleSecuenciaLuces : MonoBehaviour
 {
-    // =========================================================
     // LUCES
-    // =========================================================
-
     [Header("Luces")]
     [SerializeField] private LuzPuzzle[] luces;
+    // PLACA DE PRESION
+    [Header("Placa de Presion")]
+    [Tooltip("Si esta activo, el jugador no podra interactuar con las luces hasta pisar la placa.")]
+    [SerializeField] private bool requierePlacaParaActivar = true;
+    private bool habilitadoPorPlaca = false;
 
-    // =========================================================
     // SECUENCIA ALEATORIA
-    // =========================================================
 
     [Header("Secuencia Aleatoria")]
 
-    [Tooltip("Cantidad de luces que tendrá la secuencia.")]
+    [Tooltip("Cantidad de luces que tendra la secuencia.")]
     [SerializeField] private int longitudSecuencia = 4;
 
-    [Tooltip("Si está activo, una misma luz puede aparecer varias veces.")]
+    [Tooltip("Si esta activo, una misma luz puede aparecer varias veces.")]
     [SerializeField] private bool permitirRepetidas = false;
 
-    [Tooltip("Si está activo, genera una secuencia nueva cada vez que el jugador falla.")]
+    [Tooltip("Si esta activo, genera una secuencia nueva cada vez que el jugador falla.")]
     [SerializeField] private bool regenerarAlFallar = false;
 
     [Tooltip("Muestra la secuencia generada en la Console para hacer pruebas.")]
@@ -38,14 +35,11 @@ public class PuzzleSecuenciaLuces : MonoBehaviour
 
     private int[] secuenciaCorrecta;
 
-    // =========================================================
     // PRESENTACION
-    // =========================================================
-
     [Header("Presentacion")]
 
     [SerializeField]
-    private bool reproducirSecuenciaAlIniciar = true;
+    private bool reproducirSecuenciaAlIniciar = false; // Desactivado por defecto si usa placa
 
     [SerializeField]
     private float duracionPistaEncendida = 0.55f;
@@ -56,9 +50,7 @@ public class PuzzleSecuenciaLuces : MonoBehaviour
     [SerializeField]
     private float retrasoReinicio = 0.8f;
 
-    // =========================================================
     // AL RESOLVER
-    // =========================================================
 
     [Header("Al resolver")]
 
@@ -68,38 +60,28 @@ public class PuzzleSecuenciaLuces : MonoBehaviour
     [SerializeField]
     private UnityEvent alResolver;
 
-    // =========================================================
     // ENEMIGOS
-    // =========================================================
 
     [Header("Enemigos")]
 
-    [Tooltip("Mientras el puzzle no esté resuelto, estos generadores siguen creando enemigos.")]
+    [Tooltip("Mientras el puzzle no este resuelto, estos generadores siguen creando enemigos.")]
     [SerializeField]
     private GeneradorEnemigos[] generadoresEnemigos;
 
-    // =========================================================
     // ESTADO
-    // =========================================================
 
     private int paso;
     private bool resuelto;
     private bool ocupado;
 
-    // Controla la reproducción activa de la secuencia.
     private Coroutine reproduccionActiva;
-
-    // Evita iniciar varias corrutinas de gestión de error.
     private Coroutine gestionErrorActiva;
 
-    public bool AceptaEntrada => !resuelto && !ocupado;
+    // AHORA VALIDA SI LA PLACA YA FUE ACTIVADA
+    public bool AceptaEntrada => (!requierePlacaParaActivar || habilitadoPorPlaca) && !resuelto && !ocupado;
 
     public bool Resuelto => resuelto;
-
-    // =========================================================
     // START
-    // =========================================================
-
     private void Start()
     {
         if (luces == null || luces.Length == 0)
@@ -118,12 +100,11 @@ public class PuzzleSecuenciaLuces : MonoBehaviour
                 luces[i].Configurar(this, i);
         }
 
-        // Generamos la secuencia aleatoria.
+        // Generamos la secuencia aleatoria en memoria desde el inicio.
         GenerarSecuenciaAleatoria();
 
-        // Reproducimos la pista inicial.
-        if (reproducirSecuenciaAlIniciar &&
-            secuenciaCorrecta != null)
+        // Reproducimos la pista inicial solo si no requiere placa.
+        if (!requierePlacaParaActivar && reproducirSecuenciaAlIniciar && secuenciaCorrecta != null)
         {
             IniciarReproduccion();
         }
@@ -132,11 +113,28 @@ public class PuzzleSecuenciaLuces : MonoBehaviour
             PonerTodasEnReposo();
         }
     }
+    // ACTIVACION DESDE LA PLACA DE PRESION
+    public void ActivarDesdePlaca()
+    {
+        if (resuelto) return;
 
-    // =========================================================
+        // Solo desbloqueamos el permiso, NO reproducimos la secuencia todavia
+        habilitadoPorPlaca = true;
+        Debug.Log("Puzzle desbloqueado por la placa. Esperando a que el jugador se acerque a los totems.");
+    }
+    // DETECCION DE CERCANIA A LOS TOTEMS
+    public void JugadorEntroEnZonaVision()
+    {
+        if (resuelto || ocupado) return;
+
+        // Si la placa ya fue pisada y la secuencia no se esta mostrando, la reproducimos ahora
+        if (habilitadoPorPlaca && reproduccionActiva == null)
+        {
+            IniciarReproduccion();
+        }
+    }
+
     // GENERAR SECUENCIA ALEATORIA
-    // =========================================================
-
     private void GenerarSecuenciaAleatoria()
     {
         if (luces == null || luces.Length == 0)
@@ -149,7 +147,6 @@ public class PuzzleSecuenciaLuces : MonoBehaviour
             return;
         }
 
-        // Guardamos solamente índices de luces válidas.
         List<int> indicesValidos = new List<int>();
 
         for (int i = 0; i < luces.Length; i++)
@@ -168,28 +165,17 @@ public class PuzzleSecuenciaLuces : MonoBehaviour
             return;
         }
 
-        // =====================================================
-        // PERMITIENDO REPETICIONES
-        // =====================================================
-
         if (permitirRepetidas)
         {
             int longitud = Mathf.Max(1, longitudSecuencia);
-
             secuenciaCorrecta = new int[longitud];
 
             for (int i = 0; i < secuenciaCorrecta.Length; i++)
             {
-                int posicionRandom = Random.Range(
-                    0,
-                    indicesValidos.Count);
-
+                int posicionRandom = Random.Range(0, indicesValidos.Count);
                 secuenciaCorrecta[i] = indicesValidos[posicionRandom];
             }
         }
-        // =====================================================
-        // SIN REPETICIONES
-        // =====================================================
         else
         {
             int longitud = Mathf.Clamp(
@@ -197,15 +183,10 @@ public class PuzzleSecuenciaLuces : MonoBehaviour
                 1,
                 indicesValidos.Count);
 
-            // Barajamos la lista mediante Fisher-Yates.
             for (int i = 0; i < indicesValidos.Count; i++)
             {
-                int random = Random.Range(
-                    i,
-                    indicesValidos.Count);
-
+                int random = Random.Range(i, indicesValidos.Count);
                 int temporal = indicesValidos[i];
-
                 indicesValidos[i] = indicesValidos[random];
                 indicesValidos[random] = temporal;
             }
@@ -218,7 +199,6 @@ public class PuzzleSecuenciaLuces : MonoBehaviour
 
         paso = 0;
 
-        // Solo para depuración.
         if (mostrarSecuenciaEnConsola)
         {
             Debug.Log(
@@ -228,9 +208,7 @@ public class PuzzleSecuenciaLuces : MonoBehaviour
         }
     }
 
-    // =========================================================
     // REPETIR SECUENCIA
-    // =========================================================
 
     public void RepetirSecuencia()
     {
@@ -242,7 +220,6 @@ public class PuzzleSecuenciaLuces : MonoBehaviour
 
     private void IniciarReproduccion()
     {
-        // Evitamos duplicar una reproducción activa.
         if (resuelto ||
             reproduccionActiva != null ||
             secuenciaCorrecta == null ||
@@ -255,10 +232,7 @@ public class PuzzleSecuenciaLuces : MonoBehaviour
             StartCoroutine(ReproducirSecuenciaPista());
     }
 
-    // =========================================================
     // JUGADOR ACTIVA UNA LUZ
-    // =========================================================
-
     public void IntentarActivar(LuzPuzzle luz)
     {
         if (!AceptaEntrada || luz == null)
@@ -275,12 +249,11 @@ public class PuzzleSecuenciaLuces : MonoBehaviour
 
         int esperado = secuenciaCorrecta[paso];
 
-        // Mostramos el feedback de la interacción.
         luz.MostrarSeleccionado();
+
         // ERROR
         if (luz.Indice != esperado)
         {
-            // Evita iniciar varias gestiones de error.
             if (gestionErrorActiva == null)
             {
                 gestionErrorActiva =
@@ -293,7 +266,6 @@ public class PuzzleSecuenciaLuces : MonoBehaviour
         // ACIERTO
         paso++;
 
-        // Completó toda la secuencia.
         if (paso >= secuenciaCorrecta.Length)
             GestionarAcierto();
     }
@@ -304,15 +276,12 @@ public class PuzzleSecuenciaLuces : MonoBehaviour
         ocupado = true;
         paso = 0;
 
-        // Cancelamos cualquier feedback y apagamos todas las luces.
         ApagarTodas();
 
         yield return new WaitForSeconds(0.4f);
 
         for (int i = 0; i < secuenciaCorrecta.Length; i++)
         {
-            // Si el puzzle se resolvió o desactivó durante la
-            // reproducción, no continuamos modificando las luces.
             if (resuelto || !isActiveAndEnabled)
                 break;
 
@@ -321,39 +290,33 @@ public class PuzzleSecuenciaLuces : MonoBehaviour
             if (!EsIndiceValido(indice))
                 continue;
 
-            // Encendemos la luz de la pista.
             luces[indice].MostrarPista();
 
-            yield return new WaitForSeconds(
-                duracionPistaEncendida);
+            yield return new WaitForSeconds(duracionPistaEncendida);
 
-            // La apagamos antes de mostrar la siguiente.
             luces[indice].MostrarApagado();
 
-            yield return new WaitForSeconds(
-                duracionPistaApagada);
+            yield return new WaitForSeconds(duracionPistaApagada);
         }
 
-        // Restauramos el estado visual final.
         if (!resuelto && isActiveAndEnabled)
             PonerTodasEnReposo();
 
         ocupado = resuelto;
         reproduccionActiva = null;
     }
+
     // ERROR
     private IEnumerator GestionarError()
     {
         ocupado = true;
 
-        // Cancelamos cualquier reproducción pendiente.
         if (reproduccionActiva != null)
         {
             StopCoroutine(reproduccionActiva);
             reproduccionActiva = null;
         }
 
-        // Mostramos el error en todas las luces.
         foreach (LuzPuzzle luz in luces)
         {
             if (luz != null)
@@ -368,17 +331,13 @@ public class PuzzleSecuenciaLuces : MonoBehaviour
             yield break;
         }
 
-        // Apagamos todas antes de reiniciar.
         ApagarTodas();
 
-        // Si está habilitado, generamos una nueva secuencia.
         if (regenerarAlFallar)
             GenerarSecuenciaAleatoria();
 
         gestionErrorActiva = null;
 
-        // Reproduce la secuencia de nuevo.
-        // La corrutina controla ocupado hasta terminar.
         reproduccionActiva =
             StartCoroutine(ReproducirSecuenciaPista());
     }
@@ -389,7 +348,6 @@ public class PuzzleSecuenciaLuces : MonoBehaviour
         ocupado = true;
         resuelto = true;
 
-        // Cancelamos cualquier corrutina visual en curso.
         if (reproduccionActiva != null)
         {
             StopCoroutine(reproduccionActiva);
@@ -411,12 +369,13 @@ public class PuzzleSecuenciaLuces : MonoBehaviour
         if (puertaOBarrera != null)
             puertaOBarrera.SetActive(true);
 
-        Debug.Log("Sí lo hiciste bien bb, good boy", this);
+        Debug.Log("Puzzle resuelto con exito.", this);
 
         DetenerGeneradores();
 
         alResolver?.Invoke();
     }
+
     // REPOSO
     private void PonerTodasEnReposo()
     {
@@ -449,6 +408,7 @@ public class PuzzleSecuenciaLuces : MonoBehaviour
                 generador.DetenerGeneracion();
         }
     }
+
     // VALIDAR INDICE
     private bool EsIndiceValido(int indice)
     {
@@ -457,11 +417,10 @@ public class PuzzleSecuenciaLuces : MonoBehaviour
                indice < luces.Length &&
                luces[indice] != null;
     }
+
     // LIMPIEZA
     private void OnDisable()
     {
-        // Evitamos que las corrutinas continúen si se desactiva
-        // el objeto que controla el puzzle.
         if (reproduccionActiva != null)
         {
             StopCoroutine(reproduccionActiva);
@@ -474,8 +433,6 @@ public class PuzzleSecuenciaLuces : MonoBehaviour
             gestionErrorActiva = null;
         }
 
-        // Si el puzzle no está resuelto, liberamos el bloqueo
-        // para permitir continuar si vuelve a habilitarse.
         if (!resuelto)
             ocupado = false;
     }

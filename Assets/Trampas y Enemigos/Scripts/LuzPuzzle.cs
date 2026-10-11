@@ -1,14 +1,16 @@
-
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
-// Se puede activar interactuando cerca
+
 [RequireComponent(typeof(Collider))]
 public class LuzPuzzle : MonoBehaviour
 {
     [Header("Visual")]
     [SerializeField] private Light luzObjetivo;
     [SerializeField] private Renderer renderizadorObjetivo;
+
+    // Multiplicador para escalar la intensidad en URP sin afectar la emisión
+    [SerializeField] private float multiplicadorIntensidadLuz = 300f;
 
     [SerializeField]
     private Color colorApagado =
@@ -95,8 +97,8 @@ public class LuzPuzzle : MonoBehaviour
 
         ActivarLuz();
     }
-    // RECIBIR GOLPE
 
+    // RECIBIR GOLPE
     public void RecibirGolpe()
     {
         if (puzzle == null || !puzzle.AceptaEntrada)
@@ -110,8 +112,8 @@ public class LuzPuzzle : MonoBehaviour
         if (puzzle != null)
             puzzle.IntentarActivar(this);
     }
-    // TRIGGER JUGADOR
 
+    // TRIGGER JUGADOR
     private void OnTriggerEnter(Collider otro)
     {
         if (!otro.CompareTag("Player"))
@@ -134,6 +136,7 @@ public class LuzPuzzle : MonoBehaviour
             jugador = null;
         }
     }
+
     // VISUALES
     public void MostrarPista()
     {
@@ -172,8 +175,8 @@ public class LuzPuzzle : MonoBehaviour
         CancelarFeedback();
         AplicarVisual(colorApagado, 0f);
     }
-    // CONTROL DEL FEEDBACK
 
+    // CONTROL DEL FEEDBACK
     private void CancelarFeedback()
     {
         if (feedbackSeleccionado == null)
@@ -191,7 +194,8 @@ public class LuzPuzzle : MonoBehaviour
         if (luzObjetivo != null)
         {
             luzObjetivo.color = color;
-            luzObjetivo.intensity = intensidad;
+            // Multiplicamos por la escala URP
+            luzObjetivo.intensity = intensidad * multiplicadorIntensidadLuz;
             luzObjetivo.enabled = encendida;
         }
 
@@ -219,6 +223,7 @@ public class LuzPuzzle : MonoBehaviour
             }
         }
     }
+
     // FEEDBACK DE SELECCION
     private IEnumerator FeedbackCorrecto()
     {
@@ -233,6 +238,7 @@ public class LuzPuzzle : MonoBehaviour
 
         AplicarVisual(colorReposo, 1.2f);
     }
+
     // INPUT INTERACCION
     private static bool SePulsoInteractuar()
     {
@@ -249,6 +255,7 @@ public class LuzPuzzle : MonoBehaviour
         return mando != null &&
                mando.buttonNorth.wasPressedThisFrame;
     }
+
     // LIMPIEZA
     private void OnDestroy()
     {
