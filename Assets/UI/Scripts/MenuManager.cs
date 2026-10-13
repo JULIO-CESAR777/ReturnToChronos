@@ -52,7 +52,7 @@ public class MenuManager : MonoBehaviour
 
     public void OpenSlotsMenu()
     {
-        SceneTransitionManager.Instance.LoadScene("Nivel1");
+        SceneTransitionManager.Instance.LoadScene("Nive1_Real");
     }
 
     private void ApplySlotsMenu()

@@ -1525,7 +1525,7 @@ Transform:
   m_GameObject: {fileID: 115376497}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -105.5, y: 0.66, z: 74.1}
+  m_LocalPosition: {x: -105.5, y: 3, z: 74.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12600,6 +12600,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2472001406049558015, guid: 8b2ce06a68a4bcb4986c60cfc49f8a23, type: 3}
+      propertyPath: m_Size.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2472001406049558015, guid: 8b2ce06a68a4bcb4986c60cfc49f8a23, type: 3}
+      propertyPath: m_Size.y
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 2866978490966700142, guid: 8b2ce06a68a4bcb4986c60cfc49f8a23, type: 3}
       propertyPath: imagenVida
       value: 
@@ -12612,6 +12620,18 @@ PrefabInstance:
       propertyPath: transformCamara
       value: 
       objectReference: {fileID: 1275796327}
+    - target: {fileID: 8332157205898795315, guid: 8b2ce06a68a4bcb4986c60cfc49f8a23, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8332157205898795315, guid: 8b2ce06a68a4bcb4986c60cfc49f8a23, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8332157205898795315, guid: 8b2ce06a68a4bcb4986c60cfc49f8a23, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8332157205898795315, guid: 8b2ce06a68a4bcb4986c60cfc49f8a23, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.8398
@@ -12651,6 +12671,10 @@ PrefabInstance:
     - target: {fileID: 8332157205898795315, guid: 8b2ce06a68a4bcb4986c60cfc49f8a23, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8332157205898795315, guid: 8b2ce06a68a4bcb4986c60cfc49f8a23, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15976,7 +16000,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 502020eafdcbce94faefef296a6534c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GeneradorEnemigos
-  prefabEnemigo: {fileID: 2068686013862849868, guid: 141272c98ace56d4daa5e94cf1f6262a, type: 3}
+  prefabEnemigo: {fileID: 9088970532115507159, guid: 0c0415059c7223c428406ad5143bb2a4, type: 3}
   puntosAparicion:
   - {fileID: 115376498}
   - {fileID: 1912436550}
@@ -24788,7 +24812,7 @@ Transform:
   m_GameObject: {fileID: 1912436549}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 71.67978, y: 0.99, z: 70.72}
+  m_LocalPosition: {x: 71.67978, y: 3, z: 70.72}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
