@@ -113,6 +113,37 @@ public class PuzzleSecuenciaLuces : MonoBehaviour
             PonerTodasEnReposo();
         }
     }
+
+    private void Awake()
+    {
+        // Verificamos si el arreglo está vacío o si sus elementos internos son NULL
+        bool necesitaBuscarLuces = luces == null || luces.Length == 0;
+
+        if (!necesitaBuscarLuces)
+        {
+            int lucesValidas = 0;
+            foreach (LuzPuzzle luz in luces)
+            {
+                if (luz != null) lucesValidas++;
+            }
+
+            // Si todas las posiciones del arreglo son NULL, activamos la búsqueda
+            if (lucesValidas == 0)
+                necesitaBuscarLuces = true;
+        }
+
+        // Si no hay luces válidas asignadas en el Inspector, las busca automáticamente en sus hijos
+        if (necesitaBuscarLuces)
+        {
+            luces = GetComponentsInChildren<LuzPuzzle>(true);
+
+            if (luces != null && luces.Length > 0)
+            {
+                Debug.Log($"[PuzzleSecuenciaLuces] Luces reasignadas automáticamente al reiniciar: {luces.Length} encontradas.", this);
+            }
+        }
+    }
+
     // ACTIVACION DESDE LA PLACA DE PRESION
     public void ActivarDesdePlaca()
     {
