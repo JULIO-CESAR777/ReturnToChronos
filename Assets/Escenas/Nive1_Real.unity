@@ -1210,8 +1210,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MenuButtonVisual
   targetImage: {fileID: 70667732}
-  normalSprite: {fileID: 21300000, guid: 12a4110acd16f844dbfcc8a0b1892702, type: 3}
-  selectedSprite: {fileID: 21300000, guid: f2f1076a974c20648bd5c814db84468f, type: 3}
+  normalSprite: {fileID: -1462130973, guid: 4afddec9b1d452149ac40d57b136e7f7, type: 3}
+  selectedSprite: {fileID: 243897030, guid: 4afddec9b1d452149ac40d57b136e7f7, type: 3}
   selectedScale: 1.15
   animationSpeed: 12
 --- !u!114 &70667731
@@ -13860,8 +13860,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MenuButtonVisual
   targetImage: {fileID: 929277416}
-  normalSprite: {fileID: 21300000, guid: 12a4110acd16f844dbfcc8a0b1892702, type: 3}
-  selectedSprite: {fileID: 21300000, guid: f2f1076a974c20648bd5c814db84468f, type: 3}
+  normalSprite: {fileID: -1462130973, guid: 4afddec9b1d452149ac40d57b136e7f7, type: 3}
+  selectedSprite: {fileID: 243897030, guid: 4afddec9b1d452149ac40d57b136e7f7, type: 3}
   selectedScale: 1.15
   animationSpeed: 12
 --- !u!114 &929277415
@@ -15240,11 +15240,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2472001406049558015, guid: 8b2ce06a68a4bcb4986c60cfc49f8a23, type: 3}
       propertyPath: m_Size.x
-      value: 20
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2472001406049558015, guid: 8b2ce06a68a4bcb4986c60cfc49f8a23, type: 3}
       propertyPath: m_Size.y
-      value: 15
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2866978490966700142, guid: 8b2ce06a68a4bcb4986c60cfc49f8a23, type: 3}
       propertyPath: imagenVida
@@ -16809,8 +16809,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MenuButtonVisual
   targetImage: {fileID: 1146814078}
-  normalSprite: {fileID: 21300000, guid: 12a4110acd16f844dbfcc8a0b1892702, type: 3}
-  selectedSprite: {fileID: 21300000, guid: f2f1076a974c20648bd5c814db84468f, type: 3}
+  normalSprite: {fileID: -1462130973, guid: 4afddec9b1d452149ac40d57b136e7f7, type: 3}
+  selectedSprite: {fileID: 243897030, guid: 4afddec9b1d452149ac40d57b136e7f7, type: 3}
   selectedScale: 1.15
   animationSpeed: 12
 --- !u!114 &1146814077
@@ -25942,7 +25942,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f1860a78048a4247aea0776bba67bd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Teletransportador
-  jugador: {fileID: 0}
+  jugador: {fileID: 1465408537}
   destino: {fileID: 190680047}
 --- !u!212 &1680778593
 SpriteRenderer:

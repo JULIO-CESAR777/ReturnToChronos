@@ -124,6 +124,8 @@ public class PauseMenuManager : MonoBehaviour
         if (isPaused)
             return;
 
+        Time.timeScale = 0;
+        
         isPaused = true;
         isInSettings = false;
 
@@ -140,9 +142,7 @@ public class PauseMenuManager : MonoBehaviour
 
         Select(resumeFirstSelected);
 
-        // Opcional para juegos con mouse bloqueado.
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+     
     }
 
 
@@ -159,15 +159,10 @@ public class PauseMenuManager : MonoBehaviour
         isInSettings = false;
 
         EventSystem.current?.SetSelectedGameObject(null);
-
-        pauseTransition.Hide(
-            () =>
-            { 
-
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-            }
-        );
+        
+        Time.timeScale = 1;
+        
+        pauseTransition.Hide();
     }
 
 
