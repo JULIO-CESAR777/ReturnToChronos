@@ -127,59 +127,6 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
---- !u!1 &1560331746516000202
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2873944923297625699}
-  - component: {fileID: 9183712622029093969}
-  m_Layer: 7
-  m_Name: Collider Player
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2873944923297625699
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1560331746516000202}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8267928092435542528}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &9183712622029093969
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1560331746516000202}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 5.4644585, y: 9.52986, z: 2.2675228}
-  m_Center: {x: -0.112342834, y: -4.2649326, z: 0.031847954}
 --- !u!1 &2625087370966191582
 GameObject:
   m_ObjectHideFlags: 0
@@ -214,7 +161,6 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3189791881841070215}
-  - {fileID: 2873944923297625699}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7865244730625138239
@@ -238,6 +184,7 @@ MonoBehaviour:
   colorSeleccionado: {r: 0.49507785, g: 1, b: 0, a: 1}
   colorAcierto: {r: 0.2, g: 1, b: 0.35, a: 1}
   colorError: {r: 1, g: 0.2, b: 0.2, a: 1}
+  usarDistanciaAdicional: 0
   rangoInteraccion: 2.2
   duracionFeedbackCorrecto: 1
 --- !u!212 &2455248002628156203
@@ -318,8 +265,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 5.9209704, y: 20, z: 2.456131}
-  m_Center: {x: 0.050305128, y: 0, z: 0.08603096}
+  m_Size: {x: 6.34367, y: 20, z: 2.9469776}
+  m_Center: {x: 0.035824776, y: 0, z: -0.15939236}
 --- !u!114 &7656466221712364041
 MonoBehaviour:
   m_ObjectHideFlags: 0

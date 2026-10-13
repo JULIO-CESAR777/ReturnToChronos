@@ -58,20 +58,12 @@ public class AtaqueJugador : MonoBehaviour
             capasAtacables
         );
 
-        // Sets para evitar procesar el mismo objetivo múltiples veces en un solo ataque
-        HashSet<VidaEnemigo> enemigosProcesados = new HashSet<VidaEnemigo>();
+        // Estructuras para evitar registrar múltiples golpes al mismo objeto en un mismo frame
         HashSet<LuzPuzzle> lucesProcesadas = new HashSet<LuzPuzzle>();
+        HashSet<VidaEnemigo> enemigosProcesados = new HashSet<VidaEnemigo>();
 
         foreach (Collider objetivo in objetivos)
         {
-            // ENEMIGOS
-            VidaEnemigo enemigo = objetivo.GetComponentInParent<VidaEnemigo>();
-            if (enemigo != null && !enemigosProcesados.Contains(enemigo))
-            {
-                enemigosProcesados.Add(enemigo);
-                enemigo.RecibirDaño(daño);
-            }
-
             // PUZZLE
             LuzPuzzle luzPuzzle = objetivo.GetComponentInParent<LuzPuzzle>();
             if (luzPuzzle != null && !lucesProcesadas.Contains(luzPuzzle))
@@ -79,10 +71,19 @@ public class AtaqueJugador : MonoBehaviour
                 lucesProcesadas.Add(luzPuzzle);
                 luzPuzzle.RecibirGolpe();
             }
+
+            // ENEMIGOS
+            VidaEnemigo enemigo = objetivo.GetComponentInParent<VidaEnemigo>();
+            if (enemigo != null && !enemigosProcesados.Contains(enemigo))
+            {
+                enemigosProcesados.Add(enemigo);
+                enemigo.RecibirDaño(daño);
+            }
         }
     }
 
-    private void OnDrawGizmosSelected()
+
+private void OnDrawGizmosSelected()
     {
         if (attackPoint == null)
             return;

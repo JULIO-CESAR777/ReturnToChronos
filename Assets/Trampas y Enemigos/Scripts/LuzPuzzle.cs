@@ -82,9 +82,15 @@ public class LuzPuzzle : MonoBehaviour
 
         ActivarLuz();
     }
-
+    private float ultimoTiempoActivado;
+    private const float COOLDOWN_INTERACCION = 0.25f;
     private void ActivarLuz()
     {
+        if (Time.time - ultimoTiempoActivado < COOLDOWN_INTERACCION)
+            return;
+
+        ultimoTiempoActivado = Time.time;
+
         if (puzzle != null)
             puzzle.IntentarActivar(this);
     }
