@@ -9,53 +9,34 @@ public class LuzPuzzle : MonoBehaviour
     [SerializeField] private Light luzObjetivo;
     [SerializeField] private Renderer renderizadorObjetivo;
 
-    // Multiplicador para escalar la intensidad en URP sin afectar la emisión
+    // Multiplicador URP
     [SerializeField] private float multiplicadorIntensidadLuz = 300f;
 
-    [SerializeField]
-    private Color colorApagado =
-        new Color(0.12f, 0.12f, 0.14f);
-
-    [SerializeField]
-    private Color colorReposo =
-        new Color(0.25f, 0.55f, 1f);
-
+    [SerializeField] private Color colorApagado = new Color(0.12f, 0.12f, 0.14f);
+    [SerializeField] private Color colorReposo = new Color(0.25f, 0.55f, 1f);
     [SerializeField] private Color colorPista = Color.white;
-
-    [SerializeField]
-    private Color colorSeleccionado =
-        new Color(1f, 0.85f, 0.2f);
-
-    [SerializeField]
-    private Color colorAcierto =
-        new Color(0.2f, 1f, 0.35f);
-
-    [SerializeField]
-    private Color colorError =
-        new Color(1f, 0.2f, 0.2f);
+    [SerializeField] private Color colorSeleccionado = new Color(1f, 0.85f, 0.2f);
+    [SerializeField] private Color colorAcierto = new Color(0.2f, 1f, 0.35f);
+    [SerializeField] private Color colorError = new Color(1f, 0.2f, 0.2f);
 
     [Header("Interaccion")]
-    [SerializeField] private float rangoInteraccion = 2.2f;
+    [SerializeField] private bool usarDistanciaAdicional = false;
+    [SerializeField] private float rangoInteraccion = 2.5f;
 
     [Header("Feedback")]
     [SerializeField] private float duracionFeedbackCorrecto = 1f;
 
     private Coroutine feedbackSeleccionado;
-
-    // Material almacenado para evitar obtenerlo en cada cambio visual.
     private Material materialObjetivo;
-
     private PuzzleSecuenciaLuces puzzle;
     private int indice;
-    private bool jugadorDentro;
+
+    private int collidersDentroJugador = 0;
     private Transform jugador;
 
     public int Indice => indice;
 
-    // CONFIGURACION
-    public void Configurar(
-        PuzzleSecuenciaLuces duenio,
-        int indiceLuz)
+    public void Configurar(PuzzleSecuenciaLuces duenio, int indiceLuz)
     {
         puzzle = duenio;
         indice = indiceLuz;
@@ -66,17 +47,15 @@ public class LuzPuzzle : MonoBehaviour
         if (renderizadorObjetivo == null)
             renderizadorObjetivo = GetComponentInChildren<Renderer>();
 
-        // Se obtiene una sola vez el material de esta luz.
         if (renderizadorObjetivo != null)
             materialObjetivo = renderizadorObjetivo.material;
 
         MostrarApagado();
     }
 
-    // INTERACCION NORMAL
     private void Update()
     {
-        if (!jugadorDentro || puzzle == null)
+        if (collidersDentroJugador <= 0 || puzzle == null)
             return;
 
         if (!puzzle.AceptaEntrada)
@@ -85,12 +64,9 @@ public class LuzPuzzle : MonoBehaviour
         if (!SePulsoInteractuar())
             return;
 
-        if (jugador != null)
+        if (usarDistanciaAdicional && jugador != null)
         {
-            float distancia = Vector3.Distance(
-                jugador.position,
-                transform.position);
-
+            float distancia = Vector3.Distance(jugador.position, transform.position);
             if (distancia > rangoInteraccion)
                 return;
         }
@@ -98,11 +74,11 @@ public class LuzPuzzle : MonoBehaviour
         ActivarLuz();
     }
 
-    // RECIBIR GOLPE
     public void RecibirGolpe()
     {
         if (puzzle == null || !puzzle.AceptaEntrada)
             return;
+        Debug.Log($"Luz {indice} recibió golpe, intentando activar en puzzle.");
 
         ActivarLuz();
     }
@@ -113,31 +89,30 @@ public class LuzPuzzle : MonoBehaviour
             puzzle.IntentarActivar(this);
     }
 
-    // TRIGGER JUGADOR
     private void OnTriggerEnter(Collider otro)
     {
-        if (!otro.CompareTag("Player"))
+        // Verifica si la raíz del objeto tiene el Tag "Player"
+        if (!otro.transform.root.CompareTag("Player"))
             return;
 
-        jugadorDentro = true;
-        jugador = otro.transform;
+        collidersDentroJugador++;
+        jugador = otro.transform.root;
     }
 
     private void OnTriggerExit(Collider otro)
     {
-        if (!otro.CompareTag("Player"))
+        if (!otro.transform.root.CompareTag("Player"))
             return;
 
-        // Evita perder la referencia si hay varios colliders
-        // del jugador entrando en el mismo trigger.
-        if (jugador == otro.transform)
+        collidersDentroJugador--;
+
+        if (collidersDentroJugador <= 0)
         {
-            jugadorDentro = false;
+            collidersDentroJugador = 0;
             jugador = null;
         }
     }
 
-    // VISUALES
     public void MostrarPista()
     {
         CancelarFeedback();
@@ -153,9 +128,7 @@ public class LuzPuzzle : MonoBehaviour
     public void MostrarSeleccionado()
     {
         CancelarFeedback();
-
-        feedbackSeleccionado =
-            StartCoroutine(FeedbackCorrecto());
+        feedbackSeleccionado = StartCoroutine(FeedbackCorrecto());
     }
 
     public void MostrarAcierto()
@@ -176,7 +149,6 @@ public class LuzPuzzle : MonoBehaviour
         AplicarVisual(colorApagado, 0f);
     }
 
-    // CONTROL DEL FEEDBACK
     private void CancelarFeedback()
     {
         if (feedbackSeleccionado == null)
@@ -186,7 +158,6 @@ public class LuzPuzzle : MonoBehaviour
         feedbackSeleccionado = null;
     }
 
-    // APLICAR VISUALES
     private void AplicarVisual(Color color, float intensidad)
     {
         bool encendida = intensidad > 0.01f;
@@ -194,7 +165,6 @@ public class LuzPuzzle : MonoBehaviour
         if (luzObjetivo != null)
         {
             luzObjetivo.color = color;
-            // Multiplicamos por la escala URP
             luzObjetivo.intensity = intensidad * multiplicadorIntensidadLuz;
             luzObjetivo.enabled = encendida;
         }
@@ -208,59 +178,37 @@ public class LuzPuzzle : MonoBehaviour
                 if (encendida)
                 {
                     materialObjetivo.EnableKeyword("_EMISSION");
-
-                    materialObjetivo.SetColor(
-                        "_EmissionColor",
-                        color * intensidad);
+                    materialObjetivo.SetColor("_EmissionColor", color * intensidad);
                 }
                 else
                 {
-                    // Elimina el brillo residual del material.
-                    materialObjetivo.SetColor(
-                        "_EmissionColor",
-                        Color.black);
+                    materialObjetivo.SetColor("_EmissionColor", Color.black);
                 }
             }
         }
     }
 
-    // FEEDBACK DE SELECCION
     private IEnumerator FeedbackCorrecto()
     {
         AplicarVisual(colorSeleccionado, 4f);
-
-        yield return new WaitForSeconds(
-            duracionFeedbackCorrecto);
-
-        // La corrutina solo puede llegar aquí si no fue cancelada
-        // por otro cambio de estado de la luz.
+        yield return new WaitForSeconds(duracionFeedbackCorrecto);
         feedbackSeleccionado = null;
-
         AplicarVisual(colorReposo, 1.2f);
     }
 
-    // INPUT INTERACCION
     private static bool SePulsoInteractuar()
     {
         Keyboard teclado = Keyboard.current;
-
-        if (teclado != null &&
-            teclado.eKey.wasPressedThisFrame)
-        {
+        if (teclado != null && teclado.eKey.wasPressedThisFrame)
             return true;
-        }
 
         Gamepad mando = Gamepad.current;
-
-        return mando != null &&
-               mando.buttonNorth.wasPressedThisFrame;
+        return mando != null && mando.buttonNorth.wasPressedThisFrame;
     }
 
-    // LIMPIEZA
     private void OnDestroy()
     {
         CancelarFeedback();
-
         if (materialObjetivo != null)
         {
             Destroy(materialObjetivo);

@@ -200,9 +200,21 @@ public class JugadorVisual : MonoBehaviour
 
     public void EventoAplicarGolpe()
     {
+        Debug.Log(
+            $"[ANIMACIÓN] EventoAplicarGolpe ejecutado. " +
+            $"Frame: {Time.frameCount}, " +
+            $"Objeto: {gameObject.name}, " +
+            $"Instancia: {GetInstanceID()}"
+        );
+
         if (ataqueJugador != null)
         {
             ataqueJugador.AplicarGolpe();
         }
+        else
+        {
+            Debug.LogWarning(
+                "[ANIMACIÓN] No se encontró AtaqueJugador."
+            );
+        }
     }
-}

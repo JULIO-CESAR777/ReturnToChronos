@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class AtaqueJugador : MonoBehaviour
 {
@@ -12,7 +14,6 @@ public class AtaqueJugador : MonoBehaviour
     [Header("Hitbox")]
     [SerializeField] private float radioAtaque = 0.7f;
     [SerializeField] private LayerMask capasAtacables;
-    
     [SerializeField] private int daño = 25;
 
     private float siguienteAtaque;
@@ -21,8 +22,7 @@ public class AtaqueJugador : MonoBehaviour
     {
         if (visual == null)
         {
-            visual =
-                GetComponentInChildren<JugadorVisual>();
+            visual = GetComponentInChildren<JugadorVisual>();
         }
     }
 
@@ -39,8 +39,7 @@ public class AtaqueJugador : MonoBehaviour
         if (Time.time < siguienteAtaque)
             return;
 
-        siguienteAtaque =
-            Time.time + tiempoEntreAtaques;
+        siguienteAtaque = Time.time + tiempoEntreAtaques;
 
         if (visual != null)
         {
@@ -48,46 +47,36 @@ public class AtaqueJugador : MonoBehaviour
         }
     }
 
-    // =========================================================
-    // ESTE MÉTODO LO LLAMAREMOS DESDE LA ANIMACIÓN
-    // =========================================================
-
     public void AplicarGolpe()
     {
         if (attackPoint == null)
             return;
 
-        Collider[] objetivos =
-            Physics.OverlapSphere(
-                attackPoint.position,
-                radioAtaque,
-                capasAtacables
-            );
+        Collider[] objetivos = Physics.OverlapSphere(
+            attackPoint.position,
+            radioAtaque,
+            capasAtacables
+        );
+
+        // Sets para evitar procesar el mismo objetivo múltiples veces en un solo ataque
+        HashSet<VidaEnemigo> enemigosProcesados = new HashSet<VidaEnemigo>();
+        HashSet<LuzPuzzle> lucesProcesadas = new HashSet<LuzPuzzle>();
 
         foreach (Collider objetivo in objetivos)
         {
-            // =====================================================
-            // ENEMIGO
-            // =====================================================
-
-            VidaEnemigo enemigo =
-                objetivo.GetComponentInParent<VidaEnemigo>();
-
-            if (enemigo != null)
+            // ENEMIGOS
+            VidaEnemigo enemigo = objetivo.GetComponentInParent<VidaEnemigo>();
+            if (enemigo != null && !enemigosProcesados.Contains(enemigo))
             {
+                enemigosProcesados.Add(enemigo);
                 enemigo.RecibirDaño(daño);
             }
 
-
-            // =====================================================
             // PUZZLE
-            // =====================================================
-
-            LuzPuzzle luzPuzzle =
-                objetivo.GetComponentInParent<LuzPuzzle>();
-
-            if (luzPuzzle != null)
+            LuzPuzzle luzPuzzle = objetivo.GetComponentInParent<LuzPuzzle>();
+            if (luzPuzzle != null && !lucesProcesadas.Contains(luzPuzzle))
             {
+                lucesProcesadas.Add(luzPuzzle);
                 luzPuzzle.RecibirGolpe();
             }
         }
@@ -97,6 +86,8 @@ public class AtaqueJugador : MonoBehaviour
     {
         if (attackPoint == null)
             return;
+
+        Gizmos.color = Color.red;
 
         Gizmos.DrawWireSphere(
             attackPoint.position,
