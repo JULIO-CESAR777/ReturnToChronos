@@ -39162,18 +39162,6 @@ PrefabInstance:
       value: P_Bones
       objectReference: {fileID: 0}
     - target: {fileID: 5673898196690619524, guid: c062ba0b0c44b86489ca9859e665aede, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.1591
-      objectReference: {fileID: 0}
-    - target: {fileID: 5673898196690619524, guid: c062ba0b0c44b86489ca9859e665aede, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.1591
-      objectReference: {fileID: 0}
-    - target: {fileID: 5673898196690619524, guid: c062ba0b0c44b86489ca9859e665aede, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.1591
-      objectReference: {fileID: 0}
-    - target: {fileID: 5673898196690619524, guid: c062ba0b0c44b86489ca9859e665aede, type: 3}
       propertyPath: m_LocalPosition.x
       value: -40.5
       objectReference: {fileID: 0}
