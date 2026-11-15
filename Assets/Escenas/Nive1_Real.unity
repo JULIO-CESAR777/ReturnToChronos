@@ -2575,7 +2575,7 @@ GameObject:
   m_Component:
   - component: {fileID: 100344410}
   m_Layer: 0
-  m_Name: '---------------MAPA2-------------- '
+  m_Name: '---------------ZONA2-------------- '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8679,7 +8679,7 @@ Transform:
   m_GameObject: {fileID: 296384336}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -13.23369, y: 1.86, z: 76.41}
+  m_LocalPosition: {x: -1088.9434, y: 1.85998, z: -1175.7814}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8687,7 +8687,7 @@ Transform:
   - {fileID: 1076039750}
   - {fileID: 53462818}
   - {fileID: 743549374}
-  m_Father: {fileID: 1394458741}
+  m_Father: {fileID: 2061699677}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &298848696
 PrefabInstance:
@@ -35393,6 +35393,7 @@ MonoBehaviour:
   usarBotonesMando: 1
   usarRuedaMouse: 1
   usarDPadZoom: 1
+  giroRemate: 0.9
 --- !u!1 &1277394202
 GameObject:
   m_ObjectHideFlags: 0
@@ -38749,7 +38750,7 @@ GameObject:
   - component: {fileID: 1394458741}
   - component: {fileID: 2100100000}
   m_Layer: 0
-  m_Name: MAP1
+  m_Name: MAP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38769,7 +38770,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2100100002}
-  - {fileID: 296384337}
   - {fileID: 2061699677}
   - {fileID: 100344410}
   - {fileID: 1225678584}
@@ -58371,7 +58371,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2061699677}
   m_Layer: 0
-  m_Name: ---------------MAPA--------------
+  m_Name: ---------------ZONA1--------------
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58399,6 +58399,7 @@ Transform:
   - {fileID: 1855600894}
   - {fileID: 1379031746}
   - {fileID: 466049746}
+  - {fileID: 296384337}
   m_Father: {fileID: 1394458741}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2064890108
@@ -59073,6 +59074,129 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 786408876194096965, guid: 717122c9a0388ab46a40155b2531aaed, type: 3}
   m_PrefabInstance: {fileID: 2094517138}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2100100000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1394458740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b51ca8f03f5246649ba1ce529a7092b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GestorPisos
+  jugador: {fileID: 1465408537}
+  pisos:
+  - {fileID: 2100100004}
+  - {fileID: 2100100006}
+  pisosQueRetrocedeAlMorir: 1
+--- !u!1 &2100100001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2100100002}
+  - component: {fileID: 2100100003}
+  - component: {fileID: 2100100004}
+  m_Layer: 0
+  m_Name: Entrada Piso 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2100100002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100100001}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -12.1602, y: 2, z: -35.79309}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1394458741}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2100100003
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100100001}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4, y: 4, z: 4}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2100100004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100100001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 463c3f1be84f421886d5baba03f3fa5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ZonaPiso
+  puzzle: {fileID: 751188754}
+  generadorPlaca: {fileID: 1926887285}
+  generadores:
+  - {fileID: 1283042913}
+--- !u!65 &2100100005
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1933114055}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4, y: 4, z: 4}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2100100006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1933114055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 463c3f1be84f421886d5baba03f3fa5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ZonaPiso
+  puzzle: {fileID: 0}
+  generadorPlaca: {fileID: 0}
+  generadores: []
 --- !u!1001 &2108056167
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -60165,129 +60289,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b6dcff6fc27dc254abdab9664f02944f, type: 3}
---- !u!114 &2100100000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394458740}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b51ca8f03f5246649ba1ce529a7092b7, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::GestorPisos
-  jugador: {fileID: 1465408537}
-  pisos:
-  - {fileID: 2100100004}
-  - {fileID: 2100100006}
-  pisosQueRetrocedeAlMorir: 1
---- !u!1 &2100100001
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2100100002}
-  - component: {fileID: 2100100003}
-  - component: {fileID: 2100100004}
-  m_Layer: 0
-  m_Name: Entrada Piso 1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2100100002
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2100100001}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.1602, y: 2, z: -35.79309}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1394458741}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &2100100003
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2100100001}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 4, y: 4, z: 4}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2100100004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2100100001}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 463c3f1be84f421886d5baba03f3fa5d, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::ZonaPiso
-  puzzle: {fileID: 751188754}
-  generadorPlaca: {fileID: 1926887285}
-  generadores:
-  - {fileID: 1283042913}
---- !u!65 &2100100005
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1933114055}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 4, y: 4, z: 4}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2100100006
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1933114055}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 463c3f1be84f421886d5baba03f3fa5d, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::ZonaPiso
-  puzzle: {fileID: 0}
-  generadorPlaca: {fileID: 0}
-  generadores: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
