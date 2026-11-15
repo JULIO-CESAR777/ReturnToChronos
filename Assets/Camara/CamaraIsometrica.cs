@@ -97,6 +97,12 @@ public class CamaraIsometrica : MonoBehaviour
     // VARIABLES
     // =========================================================
 
+    [Header("Remate")]
+    [Range(0f, 2f)] [SerializeField] private float giroRemate = 0.7f;
+    private float inicioRemate = float.NegativeInfinity;
+
+    public void SacudirPorRemate() => inicioRemate = Time.time;
+
     private Camera camara;
 
     private float anguloObjetivo;
@@ -300,6 +306,9 @@ public class CamaraIsometrica : MonoBehaviour
                     direccionMirada,
                     Vector3.up
                 );
+            float t = (Time.time - inicioRemate) / 0.12f;
+            if (t < 1f)
+                transform.Rotate(0f, 0f, giroRemate * Mathf.Sin(t * 4f * Mathf.PI) * (1f - t), Space.Self);
         }
     }
 

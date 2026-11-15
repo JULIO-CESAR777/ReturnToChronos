@@ -15,12 +15,18 @@ public class VidaEnemigo : MonoBehaviour
     [SerializeField] private float tiempoEmision = 0.5f;
     [SerializeField] private float tiempoMaximoEfecto = 5f;
 
+    public bool EstaMuerto => estaMuerto;
+    private SpriteRenderer sprite;
+    private Coroutine destello;
+    private Color colorReposo;
+
     private int vidaActual;
     private bool estaMuerto = false;
 
     private void Awake()
     {
         vidaActual = vidaMaxima;
+        sprite = GetComponentInChildren<SpriteRenderer>();
     }
 
     public void RecibirDaño(int cantidad)
@@ -42,6 +48,28 @@ public class VidaEnemigo : MonoBehaviour
         {
             Morir();
         }
+        else if (sprite != null)
+        {
+            if (destello != null) StopCoroutine(destello);
+            else colorReposo = sprite.color;
+            destello = StartCoroutine(MostrarImpacto());
+        }
+    }
+
+    private IEnumerator MostrarImpacto()
+    {
+        sprite.color = new Color(1f, 0.64f, 0.34f, colorReposo.a);
+        yield return new WaitForSeconds(0.08f);
+        sprite.color = colorReposo;
+        destello = null;
+    }
+
+    private void OnDisable()
+    {
+        if (destello == null) return;
+        StopCoroutine(destello);
+        sprite.color = colorReposo;
+        destello = null;
     }
 
     private void Morir()

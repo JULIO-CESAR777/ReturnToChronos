@@ -24,6 +24,13 @@ public class Teletransportador : MonoBehaviour
         if (jugador == null || destino == null)
             return;
 
+        MoverJugador(jugador, destino);
+        if (destino.TryGetComponent(out ZonaPiso zona))
+            zona.RegistrarLlegada(jugador);
+    }
+
+    public static void MoverJugador(Transform jugador, Transform destino)
+    {
         CharacterController controller =
             jugador.GetComponent<CharacterController>();
 

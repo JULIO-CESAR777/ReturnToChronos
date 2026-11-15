@@ -119,6 +119,14 @@ public class LuzPuzzle : MonoBehaviour
         }
     }
 
+    public void ReiniciarInteraccion()
+    {
+        collidersDentroJugador = 0;
+        jugador = null;
+        ultimoTiempoActivado = float.NegativeInfinity;
+        MostrarApagado();
+    }
+
     public void MostrarPista()
     {
         CancelarFeedback();

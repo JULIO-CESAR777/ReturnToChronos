@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 7400795200552661514}
   - component: {fileID: 5483324414969560494}
   - component: {fileID: 2866978490966700142}
+  - component: {fileID: 5824637901153020993}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -322,3 +323,22 @@ MonoBehaviour:
   camara: {fileID: 0}
   spriteOriginalMiraDerecha: 1
   ataqueJugador: {fileID: 5483324414969560494}
+--- !u!114 &5824637901153020993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1673526923441977709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6895aeae511408e99468bc883bf8880, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::EfectosJugador
+  visual: {fileID: 3995916267262801393}
+  escalaAlAterrizar: 0.87
+  materialParticulas: {fileID: 2100000, guid: e823cd5b5d27c0f4b8256e7c12ee3e6d, type: 2}
+  pausaImpacto: 0.04
+  sonidoAtaque: {fileID: 8300000, guid: 1f3ddd93a29900d4ab0f9b69bf02d29e, type: 3}
+  sonidoImpacto: {fileID: 8300000, guid: 676793e8b24f07a49a5aac3b0985ad69, type: 3}
+  salidaEfectos: {fileID: 6073045706362552643, guid: da27cfc65450f0c458edac9d9243f5ca, type: 2}

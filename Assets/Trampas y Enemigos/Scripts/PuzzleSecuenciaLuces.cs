@@ -78,12 +78,41 @@ public class PuzzleSecuenciaLuces : MonoBehaviour
     private Coroutine gestionErrorActiva;
 
     // AHORA VALIDA SI LA PLACA YA FUE ACTIVADA
-    public bool AceptaEntrada => (!requierePlacaParaActivar || habilitadoPorPlaca) && !resuelto && !ocupado;
+    private bool controladoPorZona;
+
+    public void ConfigurarZona(GeneradorEnemigos[] generadores)
+    {
+        controladoPorZona = true;
+        generadoresEnemigos = generadores;
+        if (puertaOBarrera != null) puertaOBarrera.SetActive(false);
+    }
+
+    private bool intentoActivo;
+    public bool AceptaEntrada => intentoActivo && (!requierePlacaParaActivar || habilitadoPorPlaca) && !resuelto && !ocupado;
 
     public bool Resuelto => resuelto;
     // START
     private void Start()
     {
+        if (!controladoPorZona) IniciarIntento();
+    }
+
+    public void FinalizarIntento()
+    {
+        intentoActivo = false;
+        CancelarSecuencias();
+        resuelto = false;
+        ocupado = false;
+        habilitadoPorPlaca = false;
+        paso = 0;
+        if (puertaOBarrera != null) puertaOBarrera.SetActive(false);
+        foreach (var luz in luces)
+            if (luz != null) luz.ReiniciarInteraccion();
+    }
+
+    public void IniciarIntento()
+    {
+        intentoActivo = true;
         if (luces == null || luces.Length == 0)
         {
             Debug.LogError(
@@ -147,7 +176,7 @@ public class PuzzleSecuenciaLuces : MonoBehaviour
     // ACTIVACION DESDE LA PLACA DE PRESION
     public void ActivarDesdePlaca()
     {
-        if (resuelto) return;
+        if (!intentoActivo || resuelto) return;
 
         // Solo desbloqueamos el permiso, NO reproducimos la secuencia todavia
         habilitadoPorPlaca = true;
@@ -156,7 +185,7 @@ public class PuzzleSecuenciaLuces : MonoBehaviour
     // DETECCION DE CERCANIA A LOS TOTEMS
     public void JugadorEntroEnZonaVision()
     {
-        if (resuelto || ocupado) return;
+        if (!intentoActivo || resuelto || ocupado) return;
 
         // Si la placa ya fue pisada y la secuencia no se esta mostrando, la reproducimos ahora
         if (habilitadoPorPlaca && reproduccionActiva == null)
@@ -243,7 +272,7 @@ public class PuzzleSecuenciaLuces : MonoBehaviour
 
     public void RepetirSecuencia()
     {
-        if (resuelto || ocupado)
+        if (!intentoActivo || resuelto || ocupado)
             return;
 
         IniciarReproduccion();
@@ -450,7 +479,9 @@ public class PuzzleSecuenciaLuces : MonoBehaviour
     }
 
     // LIMPIEZA
-    private void OnDisable()
+    private void OnDisable() => CancelarSecuencias();
+
+    private void CancelarSecuencias()
     {
         if (reproduccionActiva != null)
         {
