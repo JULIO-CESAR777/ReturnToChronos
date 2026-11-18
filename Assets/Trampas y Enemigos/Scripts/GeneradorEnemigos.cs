@@ -22,7 +22,9 @@ public class GeneradorEnemigos : MonoBehaviour
     public bool GenerarActivo => generarActivo;
     public int CantidadVivos => enemigosVivos.Count;
 
-    void Start()
+    public bool ControladoPorZona { get; set; }
+
+    void Awake()
     {
         if (jugador == null)
         {
@@ -31,7 +33,11 @@ public class GeneradorEnemigos : MonoBehaviour
                 jugador = encontrado.transform;
         }
 
-        if (aparecerAlIniciar && generarActivo)
+    }
+
+    void Start()
+    {
+        if (!ControladoPorZona && aparecerAlIniciar && generarActivo)
             GenerarUno();
     }
 
@@ -92,10 +98,31 @@ public class GeneradorEnemigos : MonoBehaviour
         if (!eliminarVivosAlDetener)
             return;
 
+        RetirarEnemigos();
+    }
+
+    public void FinalizarIntento()
+    {
+        generarActivo = false;
+        temporizador = 0f;
+        RetirarEnemigos();
+    }
+
+    public void IniciarIntento()
+    {
+        ReanudarGeneracion();
+        if (aparecerAlIniciar) GenerarUno();
+    }
+
+    private void RetirarEnemigos()
+    {
         for (int i = enemigosVivos.Count - 1; i >= 0; i--)
         {
             if (enemigosVivos[i] != null)
+            {
+                enemigosVivos[i].SetActive(false);
                 Destroy(enemigosVivos[i]);
+            }
         }
 
         enemigosVivos.Clear();

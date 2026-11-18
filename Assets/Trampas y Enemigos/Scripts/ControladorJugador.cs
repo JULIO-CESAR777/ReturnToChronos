@@ -73,6 +73,8 @@ public class ControladorJugador : MonoBehaviour
 
     private CharacterController controlador;
 
+    private EfectosJugador efectos;
+    private bool saltoEnCurso;
     private float velocidadVertical;
 
     private Vector3 velocidadHorizontal;
@@ -117,6 +119,7 @@ public class ControladorJugador : MonoBehaviour
 
     private void Awake()
     {
+        efectos = GetComponent<EfectosJugador>();
         controlador =
             GetComponent<CharacterController>();
 
@@ -293,6 +296,14 @@ public class ControladorJugador : MonoBehaviour
 
 
     // -----------------------------------------------------
+    if (saltoEnCurso && velocidadVertical < 0f && controlador.isGrounded)
+    {
+        saltoEnCurso = false;
+        Vector3 pies = controlador.bounds.center;
+        pies.y = controlador.bounds.min.y + 0.06f;
+        efectos?.Aterrizar(pies, velocidadHorizontal);
+    }
+
     // FRENAR KNOCKBACK
     // -----------------------------------------------------
 
@@ -394,6 +405,7 @@ public class ControladorJugador : MonoBehaviour
             );
 
 
+        saltoEnCurso = true;
         AplicarBunnyHop();
     }
 
@@ -885,6 +897,17 @@ public class ControladorJugador : MonoBehaviour
         return false;
     }
     
+    public void ReiniciarMovimiento()
+    {
+        saltoEnCurso = false;
+        velocidadVertical = 0f;
+        velocidadHorizontal = Vector3.zero;
+        velocidadKnockback = Vector3.zero;
+        direccionMovimiento = Vector3.zero;
+        direccionMirada = transform.forward;
+        ultimoMomentoEnSuelo = ultimaSolicitudSalto = float.NegativeInfinity;
+    }
+
     public void AplicarKnockback(
         Vector3 direccion,
         float fuerza

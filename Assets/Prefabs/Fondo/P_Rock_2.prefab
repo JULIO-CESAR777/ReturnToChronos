@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8642099547841082499}
   - component: {fileID: 7285664999127956983}
   - component: {fileID: 3590649698817553397}
+  - component: {fileID: 4533476816317693684}
   m_Layer: 0
   m_Name: P_Rock_2
   m_TagString: Untagged
@@ -105,3 +106,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpriteBillboard
   camara: {fileID: 0}
+--- !u!65 &4533476816317693684
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2756110421681523688}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4.260967, y: 6.5554805, z: 0.2}
+  m_Center: {x: 0.60284305, y: 2.2696345, z: 0}

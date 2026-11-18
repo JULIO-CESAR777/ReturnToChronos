@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+
 
 public class VidaJugador : MonoBehaviour
 {
@@ -24,6 +24,7 @@ public class VidaJugador : MonoBehaviour
     [SerializeField] private UnityEvent alRecibirDanio;
     [SerializeField] private UnityEvent alMorir;
 
+    public GestorPisos Gestor { get; set; }
     private int vidaActual;
     private bool invulnerable;
 
@@ -48,7 +49,7 @@ public class VidaJugador : MonoBehaviour
         Vector3 posicionAtacante
     )
     {
-        if (invulnerable)
+        if (invulnerable || vidaActual == 0)
             return;
 
         if (cantidad <= 0)
@@ -133,7 +134,29 @@ public class VidaJugador : MonoBehaviour
         Debug.Log("Player murió.");
 
         alMorir?.Invoke();
+        if (Gestor != null)
+        {
+            Gestor.Reaparecer();
+            return;
+        }
         SceneTransitionManager.Instance.LoadScene("Nive1_Real");
 
     }
+
+    public void RestaurarTrasDerrota()
+    {
+        StopAllCoroutines();
+        vidaActual = vidaMaxima;
+        ActualizarBarraVida();
+        if (controladorJugador != null) controladorJugador.ReiniciarMovimiento();
+        StartCoroutine(InvulnerabilidadTemporal());
+    }
+
+#if UNITY_EDITOR
+    [ContextMenu("Probar derrota en Play Mode")]
+    private void ProbarDerrota()
+    {
+        if (Application.isPlaying) RecibirDanio(vidaActual, transform.position);
+    }
+#endif
 }

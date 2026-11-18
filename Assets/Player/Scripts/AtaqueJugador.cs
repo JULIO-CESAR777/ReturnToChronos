@@ -17,9 +17,11 @@ public class AtaqueJugador : MonoBehaviour
     [SerializeField] private int daño = 25;
 
     private float siguienteAtaque;
+    private EfectosJugador efectos;
 
     private void Awake()
     {
+        efectos = GetComponent<EfectosJugador>();
         if (visual == null)
         {
             visual = GetComponentInChildren<JugadorVisual>();
@@ -44,6 +46,7 @@ public class AtaqueJugador : MonoBehaviour
         if (visual != null)
         {
             visual.ReproducirAtaque();
+            efectos?.SonarAtaque();
         }
     }
 
@@ -62,6 +65,8 @@ public class AtaqueJugador : MonoBehaviour
         HashSet<LuzPuzzle> lucesProcesadas = new HashSet<LuzPuzzle>();
         HashSet<VidaEnemigo> enemigosProcesados = new HashSet<VidaEnemigo>();
 
+        bool huboImpacto = false;
+        bool huboRemate = false;
         foreach (Collider objetivo in objetivos)
         {
             // PUZZLE
@@ -77,9 +82,15 @@ public class AtaqueJugador : MonoBehaviour
             if (enemigo != null && !enemigosProcesados.Contains(enemigo))
             {
                 enemigosProcesados.Add(enemigo);
+                if (enemigo.EstaMuerto || daño <= 0) continue;
+                Vector3 punto = objetivo.bounds.ClosestPoint(attackPoint.position);
                 enemigo.RecibirDaño(daño);
+                huboImpacto = true;
+                huboRemate |= enemigo.EstaMuerto;
+                efectos?.Chispas(punto, enemigo.EstaMuerto);
             }
         }
+        if (huboImpacto) efectos?.ConfirmarGolpe(huboRemate);
     }
 
 
