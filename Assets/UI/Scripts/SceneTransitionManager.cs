@@ -32,7 +32,10 @@ public class SceneTransitionManager : MonoBehaviour
     [Tooltip("Tiempo mínimo que la pantalla permanece cubierta al cargar una escena.")]
     [SerializeField] private float minimumLoadingTime = 0.5f;
 
-    private bool isTransitioning;
+   private bool isTransitioning;
+public bool IsTransitioning => isTransitioning;
+
+
     private bool rotateSymbol;
 
     private void Awake()
