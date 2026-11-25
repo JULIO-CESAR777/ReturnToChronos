@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 24dcad8dc33b89843835828f3eb68baa
+guid: 4e52e23460adc6c42aa13626f52f7ca2
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4816292041457052200
-    second: fotograma0023_0
+      213: -7446068730342231051
+    second: fotograma0013_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: fotograma0023_0
+      name: fotograma0013_0
       rect:
         serializedVersion: 2
         x: 0
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 82aa6990818e6d240800000000000000
-      internalID: 4816292041457052200
+      spriteID: 5f3bec2d0ff3aa890800000000000000
+      internalID: -7446068730342231051
       vertices: []
       indices: 
       edges: []
