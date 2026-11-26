@@ -92,6 +92,39 @@ public class AtaqueJugador : MonoBehaviour
         }
         if (huboImpacto) efectos?.ConfirmarGolpe(huboRemate);
     }
+    
+    public void AumentarDanioPorcentaje(
+        float porcentaje
+    )
+    {
+        daño =
+            Mathf.CeilToInt(
+                daño *
+                (1f + porcentaje / 100f)
+            );
+
+        Debug.Log(
+            "Daño actual: " +
+            daño
+        );
+    }
+
+
+    public void AumentarVelocidadAtaquePorcentaje(
+        float porcentaje
+    )
+    {
+        float multiplicador =
+            1f + porcentaje / 100f;
+
+        tiempoEntreAtaques /=
+            multiplicador;
+
+        Debug.Log(
+            "Cooldown ataque: " +
+            tiempoEntreAtaques
+        );
+    }
 
 
 private void OnDrawGizmosSelected()

@@ -922,4 +922,21 @@ public class ControladorJugador : MonoBehaviour
             direccion.normalized *
             fuerza;
     }
+    
+    
+    
+    //BUFFS
+    
+    public void AumentarVelocidadMovimientoPorcentaje(
+        float porcentaje
+    )
+    {
+        velocidadMovimiento *=
+            1f + porcentaje / 100f;
+
+        Debug.Log(
+            "Velocidad movimiento: " +
+            velocidadMovimiento
+        );
+    }
 }

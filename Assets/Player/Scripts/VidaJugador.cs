@@ -128,6 +128,33 @@ public class VidaJugador : MonoBehaviour
 
         invulnerable = false;
     }
+    
+    public void AumentarVidaMaxima(
+        int cantidad
+    )
+    {
+        if (cantidad <= 0)
+            return;
+
+        vidaMaxima += cantidad;
+
+        // También curamos la cantidad
+        // de vida máxima obtenida.
+        vidaActual += cantidad;
+
+        vidaActual =
+            Mathf.Min(
+                vidaActual,
+                vidaMaxima
+            );
+
+        ActualizarBarraVida();
+
+        Debug.Log(
+            "Vida máxima: " +
+            vidaMaxima
+        );
+    }
 
     private void Morir()
     {
